@@ -40,6 +40,20 @@ class Phonebook extends Component {
       }));
    };
 
+   componentDidMount(){
+      const contacts = JSON.parse(localStorage.getItem('contacts'))
+      if (contacts) {
+         console.log(contacts)
+         this.setState({contacts: contacts})
+      }
+   };
+
+   componentDidUpdate(rpevProps, prevState) {
+      if (this.state.contacts !== prevState.contacts) {
+         localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
+      }
+   }
+
    render() {
       const { contacts, filter } = this.state;
 
@@ -55,7 +69,7 @@ class Phonebook extends Component {
             <ContactForm onAddContact={this.addContact} />
 
             <h2>Contacts</h2>
-            <Filter value={filter} onChange={this.changeFilter}></Filter>
+            <Filter value={filter} onChange={this.changeFilter} />
             <ContactList
                contactsAray={visibleContacts}
                onDelete={this.onDelete}
